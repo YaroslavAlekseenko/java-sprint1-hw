@@ -16,12 +16,23 @@ public class Main {
                 System.out.println("Введите количество шагов за определённый день");
                 System.out.println("Введите месяц");
                 int month = scanner.nextInt();
+
+                if (12 >= month & month >= 1) {               // Проверка корректности ввода месяца
                 System.out.println("Введите день");
                 int day = scanner.nextInt();
-                System.out.println("Введите количество шагов");
-                int step = scanner.nextInt();
 
-                stepTracker.saveSteps(month, day, step);
+                    if (30 >= day & day >= 1) {               // Проверка корректности ввода дня
+                    System.out.println("Введите количество шагов");
+                    int step = scanner.nextInt();
+
+                     stepTracker.saveSteps(month, day, step);
+                    } else {
+                        System.out.println("Значение некорректно! Диапазон дней от 1 до 30.");
+                    }
+
+                } else {
+                    System.out.println("Значение некорректно! Диапазон месяцев от 1 до 12.");
+                }
 
                 printMenu();
                 userInput = scanner.nextInt();
@@ -32,13 +43,20 @@ public class Main {
                 System.out.println("Введите месяц");
                 int month = scanner.nextInt();
 
-                stepTracker.printAllSteps(month);             // Статистика шагов за месяц
+                if (12 >= month & month >= 1) {                                 // Проверка корректности ввода месяца
+                stepTracker.printAllSteps(month);                               // Статистика шагов за месяц
                 System.out.println("");
-                int sum = stepTracker.printSumSteps(month);   // Сумма шагов за месяц
-                stepTracker.printMediumSteps(month);          // Среднее кол-во шагов за месяц
-                stepTracker.printMaxSteps(month);             // Максимальное кол-во шагов в месяце
-                stepTracker.printBeastSeries(month);          // Лучшая серия шагов
-                converter.convert(sum);                       // Конвертация шагов в км и ккал
+                stepTracker.printSumSteps(month);                               // Сумма шагов за месяц
+                stepTracker.printMediumSteps(month);                            // Среднее кол-во шагов за месяц
+                stepTracker.printMaxSteps(month);                               // Максимальное кол-во шагов в месяце
+                stepTracker.printBestSeries(month);                             // Лучшая серия шагов
+                converter.distanceConvert(stepTracker.SumSteps(month));         // Конвертация шагов в км
+                converter.kilocalorieConvert(stepTracker.SumSteps(month));      // Конвертация шагов в ккал
+                converter.printDistanceConvert(stepTracker.SumSteps(month));    // Вывод км
+                converter.printKilocalorieConvert(stepTracker.SumSteps(month)); // Вывод ккал
+                } else {
+                    System.out.println("Значение некорректно! Диапазон месяцев от 1 до 12.");
+                }
 
                 printMenu();
                 userInput = scanner.nextInt();

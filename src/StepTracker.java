@@ -18,50 +18,52 @@ public class StepTracker {
     // Ввод данных о количестве пройденных шагов
     int saveSteps(int month, int day, int step) {
         if (step >= 0) {
-        this.monthToData[month].dayToData[day-1] = step;
-        System.out.println("Значение сохранено! Пройдено шагов за день: " + this.monthToData[month].dayToData[day-1]);
+        this.monthToData[month-1].dayToData[day-1] = step;
+        System.out.println("Значение сохранено! Пройдено шагов за день: " + this.monthToData[month-1].dayToData[day-1]);
         } else {
         System.out.println("Значение некорректно! Количество шагов должно быть положительным.");
         }
-        return this.monthToData[month].dayToData[day-1];
+        return this.monthToData[month-1].dayToData[day-1];
     }
 
     // Вывод данных о количестве пройденных шагов
     void printAllSteps(int month) {
-        int[] dayToData = monthToData[month].dayToData;
-        for (int i = 0; i < dayToData.length - 1; i++) {
+        int[] dayToData = monthToData[month-1].dayToData;
+        int time = dayToData.length;
+        for (int i = 0; i < time - 1; i++) {
             System.out.print((i + 1) + " день: " + dayToData[i]+ ", ");
         }
-        System.out.print((dayToData.length) + " день: " + dayToData[dayToData.length - 1]);
+        System.out.print((time) + " день: " + dayToData[time - 1]);
     }
 
-     // Сумма пройденных шагов за месяц
-     int printSumSteps(int month) {
+     // Подсчёт суммы пройденных шагов за месяц
+     int SumSteps(int month) {
         int sum = 0;
-        int[] dayToData = monthToData[month].dayToData;
+        int[] dayToData = monthToData[month-1].dayToData;
         for (int i = 0; i < dayToData.length; i++) {
             sum = sum + dayToData[i];
         }
-        System.out.println("Общее количество шагов за месяц: " + sum);
         return sum;
+     }
+
+    // Вывод суммы пройденных шагов за месяц
+    void printSumSteps(int month) {
+        int sum = SumSteps(month);
+        System.out.println("Общее количество шагов за месяц: " + sum);
     }
 
     // Среднее кол-во пройденных шагов за месяц
     void printMediumSteps(int month) {
-        int sum = 0;
+        int sum = SumSteps(month);
         int medium = 0;
-        int[] dayToData = monthToData[month].dayToData;
-        for (int i = 0; i < dayToData.length; i++) {
-            sum = sum + dayToData[i];
-        }
-        medium = sum / dayToData.length;
+        medium = sum / 30;
         System.out.println("Среднее количество шагов: " + medium);
     }
 
     // Максимальное кол-во шагов в месяце
     void printMaxSteps(int month) {
         int maxSteps = 0;
-        int[] dayToData = monthToData[month].dayToData;
+        int[] dayToData = monthToData[month-1].dayToData;
         for (int i = 0; i < dayToData.length; i++) {
             if (dayToData[i] > maxSteps) {
                 maxSteps = dayToData[i];
@@ -73,8 +75,8 @@ public class StepTracker {
     // Ввод цели по количеству шагов в день
     void targetStep(int steps) {
         if (steps >= 0) {
-            this.target = steps;
-            System.out.println("Значение сохранено! Целевое количество шагов: " + this.target);
+            target = steps;
+            System.out.println("Значение сохранено! Целевое количество шагов: " + target);
         }
         else {
             System.out.println("Значение некорректно! Целевое количество шагов должно быть положительным.");
@@ -83,22 +85,22 @@ public class StepTracker {
 
     // Подсчёт лучшей серии: максимальное кол-во подряд идущих дней,
     // в течение которых количество шагов за день было равно или выше целевого.
-    void printBeastSeries(int month) {
-        int[] dayToData = monthToData[month].dayToData;
-        int beastSeries = 0;
+    void printBestSeries(int month) {
+        int[] dayToData = monthToData[month-1].dayToData;
+        int bestSeries = 0;
         int curSeries = 0;
 
         for (int i = 0; i < dayToData.length; i++) {
-            if (dayToData[i] >= this.target) {
+            if (dayToData[i] >= target) {
                 curSeries++;
             } else {
+                if (curSeries > bestSeries) {
+                    bestSeries = curSeries;
+                }
                 curSeries = 0;
             }
-            if (curSeries > beastSeries) {
-                beastSeries = curSeries;
-            }
         }
-        System.out.println("Лучшая серия: " + beastSeries);
+        System.out.println("Лучшая серия: " + bestSeries);
     }
 
 }
